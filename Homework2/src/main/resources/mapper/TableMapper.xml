@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.TableDao">
+
+    <insert id="createUser">
+        Create Table if not exists User (
+            `id` varchar(12),
+            `name` varchar(255),
+            `charge` double,
+            `balance` double,
+            primary key (`id`)
+        );
+    </insert>
+    <insert id="createBasicCharge">
+        Create Table if not exists BasicCharge (
+            `id` int auto_increment,
+            `CallCharge` double,
+            `SMSCharge` double,
+            `LocalDataCharge` double,
+            `GlobalDataCharge` double,
+            primary key (`id`)
+        );
+    </insert>
+    <insert id="createPlan">
+       Create Table IF NOT EXISTS Plan (
+            `id` int auto_increment,
+            `name` VARCHAR(55),
+            `cost` DOUBLE,
+            `Call` INT,
+            `SMS` INT,
+            `LocalData` DOUBLE,
+            `GlobalData` DOUBLE,
+            primary key (`id`)
+        );
+    </insert>
+    <insert id="createOrder1">
+        Create Table IF NOT EXISTS Order1 (
+            `uid` varchar(12),
+            `pid` INT,
+            `orderTime` DATETIME
+        );
+    </insert>
+    <insert id="createCancel">
+        Create Table IF NOT EXISTS Cancel (
+            `id` INT,
+            `pid` INT,
+            `cancelTime` DATETIME,
+            `EffectType` ENUM(`immediate`, `delay`),
+            `EffectTime` DATETIME
+        );
+    </insert><insert id="createSMSRecord">
+        Create Table IF NOT EXISTS `SMSRecord` (
+            `id` INT,
+            `number` INT,
+            `sendTime` DATETIME
+        );
+    </insert>
+    <insert id="createTables">
+
+    </insert>
+    <insert id="createDataRecord">
+        Create Table IF NOT EXISTS `DataRecord` (
+            `id` INT,
+            `number` DOUBLE,
+            `startTime` DATETIME,
+            `endTime` DATETIME,
+            `type` ENUM('Local', 'Global')
+        );
+    </insert>
+    <insert id="createUserPlan">
+        Create Table IF NOT EXISTS UserPlan (
+            `id` INT,
+            `pid` INT
+        );
+    </insert>
+
+
+
+    <delete id="dropTables" >
+        DROP TABLE IF EXISTS
+        User, BasicCharge, Plan, order1, Cancel, CallRecord, SMSRecord, DataRecord, UserPlan;
+    </delete>
+</mapper>
