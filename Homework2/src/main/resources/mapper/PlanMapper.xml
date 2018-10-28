@@ -9,6 +9,14 @@
     </insert>
 
     <select id="findPlan" resultType="model.Plan">
-        SELECT * FROM Plan WHERE name = #{name}
+        SELECT * FROM Plan WHERE name = #{name};
+    </select>
+
+    <select id="findPlanById" resultType="model.Plan">
+        SELECT * FROM Plan WHERE pid = #{id};
+    </select>
+
+    <select id="findAllPlans" resultType="model.Plan">
+        SELECT * FROM Plan;
     </select>
 </mapper>

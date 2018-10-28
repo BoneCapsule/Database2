@@ -1,22 +1,27 @@
 package model;
 
 public class UserPlan {
-    private int userId;
-    private int planId;
+    private int id;
+    private int pid;
 
-    public int getUserId() {
-        return userId;
+    @Override
+    public String toString() {
+        return "用户ID: " + id + ", 套餐ID: " + pid ;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public int getId() {
+        return id;
     }
 
-    public int getPlanId() {
-        return planId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setPlanId(int planId) {
-        this.planId = planId;
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
     }
 }

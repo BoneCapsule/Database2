@@ -28,5 +28,10 @@
         <mapper resource="mapper/TableMapper.xml"/>
         <mapper resource="mapper/UserMapper.xml"/>
         <mapper resource="mapper/PlanMapper.xml"/>
+        <mapper resource="mapper/UserPlanMapper.xml"/>
+        <mapper resource="mapper/BasicChargeMapper.xml"/>
+        <mapper resource="mapper/CancelMapper.xml"/>
+        <mapper resource="mapper/OrderMapper.xml"/>
+        <mapper resource="mapper/RecordMapper.xml"/>
     </mappers>
 </configuration>

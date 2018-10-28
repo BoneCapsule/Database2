@@ -3,8 +3,13 @@
 
 <mapper namespace="dao.OrderDao">
     <insert id="insertOrder" keyProperty="id" parameterType="model.Order">
-        INSERT INTO Order1(`uid`, `pid`, `orderTime`)
-        VALUES (#{userId, jdbcType=VARCHAR}, #{planId,jdbcType=INTEGER}, #{orderTime});
+        INSERT INTO Order1(`id`, `pid`, `orderTime`)
+        VALUES (#{id, jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, #{orderTime});
     </insert>
 
+    <insert id="OrderPlan">
+        set @now = NOW();
+        insert into Order1(`id`, `pid`, `orderTime`) values (#{id, jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, @now);
+        insert into UserPlan(`id`, `pid`) values (#{id, jdbcType=INTEGER}, #{pid,jdbcType=INTEGER});
+    </insert>
 </mapper>

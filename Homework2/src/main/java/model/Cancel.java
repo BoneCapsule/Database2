@@ -5,35 +5,30 @@ import model.DataEnum.EffectType;
 import java.time.LocalDateTime;
 
 public class Cancel {
-    private int userId;
-    private int planId;
+    private int id;
+    private int pid;
     private LocalDateTime cancelTime;
     private LocalDateTime effectTime;  // 套餐退订的生效时间
     private EffectType effectType;
 
 
     public Cancel() {
-        if (effectType == EffectType.IMMEDIATE) {
-            effectTime = cancelTime;
-        } else {
-            effectTime = cancelTime.plusMonths(1);
-        }
     }
 
-    public int getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getPlanId() {
-        return planId;
+    public int getPid() {
+        return pid;
     }
 
-    public void setPlanId(int planId) {
-        this.planId = planId;
+    public void setPid(int pid) {
+        this.pid = pid;
     }
 
     public LocalDateTime getCancelTime() {

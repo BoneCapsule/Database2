@@ -10,7 +10,7 @@ public interface UserDao {
 
     void insertUser(User user);
 
-    User findUserById(@Param("id") String id);
+    User findUserById(@Param("id") int id);
 
     User findUserByName(@Param("name") String name);
 

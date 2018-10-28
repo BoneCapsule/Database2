@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class DataRecord {
 
-    private int userId;
+    private int id;
     private double number;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -23,12 +23,12 @@ public class DataRecord {
         this.number = number;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDateTime getStartTime() {

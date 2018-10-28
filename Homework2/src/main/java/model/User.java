@@ -2,7 +2,7 @@ package model;
 
 public class User {
 
-    private String id;
+    private int id;
     private String name;
     private double charge;  // 本月话费
     private double balance;
@@ -10,19 +10,18 @@ public class User {
     public User() {
     }
 
-    public User(String id, String name, double charge, double balance) {
-        this.id = id;
+    public User(String name, double charge, double balance) {
         this.name = name;
         this.charge = charge;
         this.balance = balance;
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

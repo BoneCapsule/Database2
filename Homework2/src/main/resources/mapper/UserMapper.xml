@@ -3,8 +3,8 @@
 
 <mapper namespace="dao.UserDao">
     <insert id="insertUser" keyProperty="id" parameterType="model.User">
-        INSERT INTO User(`id`, `name`, `charge`, `balance`)
-        VALUES (#{id, jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{charge,jdbcType=DOUBLE},#{balance,jdbcType=DOUBLE});
+        INSERT INTO User(`name`, `charge`, `balance`)
+        VALUES (#{name,jdbcType=VARCHAR}, #{charge,jdbcType=DOUBLE},#{balance,jdbcType=DOUBLE});
     </insert>
 
     <select id="findUserByName" resultType="model.User">

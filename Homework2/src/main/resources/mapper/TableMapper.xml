@@ -5,7 +5,7 @@
 
     <insert id="createUser">
         Create Table if not exists User (
-            `id` varchar(12),
+            `id` int auto_increment,
             `name` varchar(255),
             `charge` double,
             `balance` double,
@@ -34,9 +34,9 @@
             primary key (`id`)
         );
     </insert>
-    <insert id="createOrder1">
+    <insert id="createOrder">
         Create Table IF NOT EXISTS Order1 (
-            `uid` varchar(12),
+            `id` int,
             `pid` INT,
             `orderTime` DATETIME
         );
@@ -46,8 +46,7 @@
             `id` INT,
             `pid` INT,
             `cancelTime` DATETIME,
-            `EffectType` ENUM(`immediate`, `delay`),
-            `EffectTime` DATETIME
+            `EffectType` varchar(20)
         );
     </insert><insert id="createSMSRecord">
         Create Table IF NOT EXISTS `SMSRecord` (
@@ -65,7 +64,7 @@
             `number` DOUBLE,
             `startTime` DATETIME,
             `endTime` DATETIME,
-            `type` ENUM('Local', 'Global')
+            `dataType` varchar(255)
         );
     </insert>
     <insert id="createUserPlan">
@@ -74,8 +73,14 @@
             `pid` INT
         );
     </insert>
-
-
+    <insert id="createCallRecord">
+        Create Table IF NOT EXISTS `CallRecord` (
+            `id` INT,
+            `number` int,
+             `startTime` DATETIME,
+            `endTime` DATETIME
+        );
+    </insert>
 
     <delete id="dropTables" >
         DROP TABLE IF EXISTS

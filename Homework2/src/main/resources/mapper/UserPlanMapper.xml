@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.UserPlanDao">
+    <select id="getUserPlan" resultType="model.UserPlan">
+        select * from UserPlan where id = #{id, jdbcType=INTEGER};
+    </select>
+
+    <select id="getHistoryPlan" resultType="model.HistoryPlan">
+        select U.id, pid, O.orderTime from Order1 O, Plan P, User U
+            where O.pid = P.id and O.id = U.id and U.id = #{id} GROUP By U.id, pid ORDER By orderTime;
+    </select>
+
+    <delete id="deleteUserPlan">
+        delete from UserPlan where id = #{id, jdbcType=INTEGER} and pid = #{pid, jdbcType=INTEGER};
+    </delete>
+    <insert id="insertUserPlan">
+        insert into UserPlan(`id`, `pid`) values (#{id, jdbcType=INTEGER}, #{pid,jdbcType=INTEGER});
+    </insert>
+</mapper>

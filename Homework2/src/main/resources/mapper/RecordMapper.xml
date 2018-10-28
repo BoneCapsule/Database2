@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dao.RecordDao">
+    <insert id="insertDataRecord">
+        INSERT INTO DataRecord(`id`, `number`, `startTime`, `endTime`, `dataType`)
+        VALUES (#{id, jdbcType=INTEGER}, #{number,jdbcType=DOUBLE}, #{startTime}, #{endTime},#{dataType});
+    </insert>
+
+    <select id="getDataRecord" resultType="model.DataRecord">
+        @beginningOfMonth = convert(date_add(date_add(last_day(#{nowTime}),interval 1 day),interval -1 month), DATETIME);
+
+        select * from DataRecord where id = #{id, jdbcType=INTEGER} and
+            startTime between @beginningOfMonth and #{nowTime} order by startTime;
+    </select>
+
+    <insert id="insertSMSRecord">
+        insert into SMSRecord(`id`, `number`, `sendTime`)
+        values (#{id, jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{sendTime});
+    </insert>
+
+    <select id="getSMSRecord" resultType="model.SMSRecord">
+        @beginningOfMonth = convert(date_add(date_add(last_day(#{nowTime}),interval 1 day),interval -1 month), DATETIME);
+
+        select * from SMSRecord where id = #{id, jdbcType=INTEGER} and
+            sendTime between @beginningOfMonthand and #{nowTime} order by sendTime;
+    </select>
+
+    <insert id="insertCallRecord">
+        insert into SMSRecord(`id`, `number`, `startTime`, `endTime`)
+        values (#{id, jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{startTime}, #{endTime});
+    </insert>
+
+    <select id="getCallRecord" resultType="model.CallRecord">
+        @beginningOfMonth = convert(date_add(date_add(last_day(#{nowTime}),interval 1 day),interval -1 month), DATETIME);
+        select * from CallRecord where id = #{id, jdbcType=INTEGER} and
+            startTime between @beginningOfMonth and #{nowTime} order by startTime;
+    </select>
+
+</mapper>
