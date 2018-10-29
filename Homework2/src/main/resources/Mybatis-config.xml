@@ -8,18 +8,14 @@
         <setting name="cacheEnabled" value="false"/>
     </settings>
 
-    <typeAliases>
-        <package name="model"/>
-    </typeAliases>
-
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/ddt"/>
-                <property name="username" value="root"/>
-                <property name="password" value="lijie160582"/>
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
                 <property name="driver.encoding" value="UTF8" />
             </dataSource>
         </environment>

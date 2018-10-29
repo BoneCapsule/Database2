@@ -12,13 +12,6 @@ public class CallRecord {
 
 
     public CallRecord() {
-        Duration duration = Duration.between(startTime, endTime);
-
-        // 通话时长不足一分钟按一分钟算
-        number = (int) duration.toMinutes();
-        if (duration.toMillis() - number > 0) {
-            number += 1;
-        }
     }
 
     public int getId() {

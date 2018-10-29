@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface BasicChargeDao {
 
-    BasicCharge getBasicCharge(@Param("userId") int userId);
+    BasicCharge getBasicCharge(@Param("id") int id);
 
-    void insertBasicCharge(@Param("call") double call, @Param("sms") double sms,
+    void insertBasicCharge(@Param("id") int id, @Param("call") double call, @Param("sms") double sms,
                            @Param("localData") double localData, @Param("globalData") double globalData);
 }

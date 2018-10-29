@@ -10,7 +10,7 @@ public class DataRecord {
     private double number;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private DataType dataType;
+    private String dataType;
 
     public DataRecord() {
     }
@@ -47,11 +47,12 @@ public class DataRecord {
         this.endTime = endTime;
     }
 
-    public DataType getDataType() {
+
+    public String getDataType() {
         return dataType;
     }
 
-    public void setDataType(DataType dataType) {
+    public void setDataType(String dataType) {
         this.dataType = dataType;
     }
 }

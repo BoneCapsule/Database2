@@ -1,14 +1,12 @@
 package data;
 
-import config.MapperFactory;
+import main.MapperFactory;
 import dao.*;
-import model.BasicCharge;
 import model.Plan;
 import model.User;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class InitData {
 
@@ -95,6 +93,6 @@ public class InitData {
     }
 
     public void initBasicCharge() {
-        basicChargeDao.insertBasicCharge(0.5, 0.1, 2.0, 5.0);
+        basicChargeDao.insertBasicCharge(1, 0.5, 0.1, 2.0, 5.0);
     }
 }

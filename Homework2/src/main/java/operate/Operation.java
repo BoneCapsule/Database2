@@ -1,6 +1,6 @@
 package operate;
 
-import config.MapperFactory;
+import main.MapperFactory;
 import dao.*;
 import model.*;
 import model.DataEnum.DataType;
@@ -10,6 +10,8 @@ import model.bill.Bill;
 import model.bill.RecordBill;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -109,9 +111,15 @@ public class Operation {
      * @throws IOException
      */
     public RecordBill getRecordBill(int id, List<UserPlan> userPlans, LocalDateTime nowTime,
-                                    RecordType recordType, BasicCharge basicCharge) throws IOException {
-        RecordDao recordDao = MapperFactory.getSession().getMapper(RecordDao.class);
-        PlanDao planDao = MapperFactory.getSession().getMapper(PlanDao.class);
+                                    RecordType recordType, BasicCharge basicCharge) {
+        RecordDao recordDao = null;
+        PlanDao planDao = null;
+        try {
+            recordDao = MapperFactory.getSession().getMapper(RecordDao.class);
+            planDao = MapperFactory.getSession().getMapper(PlanDao.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // 电话使用情况
         if (recordType.equals(RecordType.CALL)) {
@@ -185,10 +193,10 @@ public class Operation {
             List<DataRecord> dataRecords = recordDao.getDataRecord(id, nowTime);
             for (DataRecord dr : dataRecords) {
                 double number = dr.getNumber();
-                if (dr.getDataType().equals(DataType.LOCAL)) {
+                if (dr.getDataType().equals(DataType.LOCAL.value)) {
                     totalLocalUsed += number;
                 }
-                if (dr.getDataType().equals(DataType.GLOBAL)) {
+                if (dr.getDataType().equals(DataType.GLOBAL.value)) {
                     totalGlobalUsed += number;
                 }
             }
@@ -229,11 +237,19 @@ public class Operation {
      * @param id
      * @return
      */
-    public Bill getBill(int id) throws IOException {
-        UserDao userDao = MapperFactory.getSession().getMapper(UserDao.class);
-        BasicChargeDao basicChargeDao = MapperFactory.getSession().getMapper(BasicChargeDao.class);
-        UserPlanDao userPlanDao = MapperFactory.getSession().getMapper(UserPlanDao.class);
-        PlanDao planDao = MapperFactory.getSession().getMapper(PlanDao.class);
+    public Bill getBill(int id) {
+        UserDao userDao = null;
+        BasicChargeDao basicChargeDao = null;
+        UserPlanDao userPlanDao = null;
+        PlanDao planDao = null;
+        try {
+            userDao = MapperFactory.getSession().getMapper(UserDao.class);
+            basicChargeDao = MapperFactory.getSession().getMapper(BasicChargeDao.class);
+            userPlanDao = MapperFactory.getSession().getMapper(UserPlanDao.class);
+            planDao = MapperFactory.getSession().getMapper(PlanDao.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         User user = userDao.findUserById(id);
         BasicCharge basicCharge = basicChargeDao.getBasicCharge(id);
         List<UserPlan> userPlans = userPlanDao.getUserPlan(id);
@@ -257,31 +273,82 @@ public class Operation {
         bill.setId(id);
         bill.setName(user.getName());
         bill.setUserPlans(userPlans);
-        bill.setStartDate(LocalDate.now());
-        bill.setEndDate(today.with(TemporalAdjusters.firstDayOfMonth()));
+        bill.setStartDate(today.with(TemporalAdjusters.firstDayOfMonth()));
+        bill.setEndDate(LocalDate.now());
         bill.setCallBill(callBill);
         bill.setSmsBill(smsBill);
         bill.setLocalDataBill(localBill);
         bill.setGlobalDataBill(globalBill);
-        bill.setTotalCharge(totolPlanCharges + callBill.getCharge() + smsBill.getCharge()
-                + localBill.getCharge() + globalBill.getCharge());
+        double total = totolPlanCharges + callBill.getCharge() + smsBill.getCharge()
+                + localBill.getCharge() + globalBill.getCharge();
+        // 保留两位小数
+        BigDecimal bg = new BigDecimal(total).setScale(2, RoundingMode.UP);
+        bill.setTotalCharge(bg.doubleValue());
         return bill;
     }
 
 
     /**
-     *用户的某次电话记录
+     * 用户的某次通话资费
      * @param id
      * @param startTime
      * @param endTime
+     * @return 资费
      */
-    public void CallRecord(int id, LocalDateTime startTime, LocalDateTime endTime) throws IOException {
-        RecordDao recordDao = MapperFactory.getSession().getMapper(RecordDao.class);
+    public double CallRecord(int id, LocalDateTime startTime, LocalDateTime endTime) {
+        RecordDao recordDao = null;
+        BasicChargeDao  basicChargeDao = null;
+        try {
+            recordDao = MapperFactory.getSession().getMapper(RecordDao.class);
+            basicChargeDao = MapperFactory.getSession().getMapper(BasicChargeDao.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Duration duration = Duration.between(startTime, endTime);
         int minutes = (int) duration.toMinutes();
         if (duration.toMinutes() > minutes) {
             minutes += 1;
         }
         recordDao.insertCallRecord(id, minutes, startTime, endTime);
+        BasicCharge basicCharge = basicChargeDao.getBasicCharge(1);
+        double charge = minutes * basicCharge.getCallCharge();
+
+        // 保留两位小数
+        BigDecimal bg = new BigDecimal(charge).setScale(2, RoundingMode.UP);
+
+        return bg.doubleValue();
+    }
+
+    /**
+     * 获取用户一次使用流量时的流量资费
+     * @param id
+     * @param startTime
+     * @param endTime
+     * @param number
+     * @param dataType
+     * @return 流量资费
+     */
+    public double DataRecord(int id, LocalDateTime startTime, LocalDateTime endTime, double number, DataType dataType) {
+        RecordDao recordDao = null;
+        BasicChargeDao  basicChargeDao = null;
+        try {
+            recordDao = MapperFactory.getSession().getMapper(RecordDao.class);
+            basicChargeDao = MapperFactory.getSession().getMapper(BasicChargeDao.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        recordDao.insertDataRecord(id, startTime, endTime, number, dataType.value);
+        BasicCharge basicCharge = basicChargeDao.getBasicCharge(1);
+        double charge = 0;
+        if (dataType.equals(DataType.LOCAL)) {
+            charge = number * basicCharge.getLocalDataCharge();
+        }
+        else {
+            charge = number * basicCharge.getGlobalDataCharge();
+        }
+        // 保留两位小数
+        BigDecimal bg = new BigDecimal(charge).setScale(2, RoundingMode.UP);
+
+        return bg.doubleValue();
     }
 }

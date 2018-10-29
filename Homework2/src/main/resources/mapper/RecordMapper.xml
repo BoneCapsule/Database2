@@ -8,10 +8,10 @@
     </insert>
 
     <select id="getDataRecord" resultType="model.DataRecord">
-        @beginningOfMonth = convert(date_add(date_add(last_day(#{nowTime}),interval 1 day),interval -1 month), DATETIME);
-
         select * from DataRecord where id = #{id, jdbcType=INTEGER} and
-            startTime between @beginningOfMonth and #{nowTime} order by startTime;
+            startTime between convert(date_add(date_add(last_day(#{nowTime}),interval 1 day),interval -1 month), DATETIME)
+             and convert(#{nowTime}, datetime)
+             order by startTime;
     </select>
 
     <insert id="insertSMSRecord">
@@ -20,21 +20,20 @@
     </insert>
 
     <select id="getSMSRecord" resultType="model.SMSRecord">
-        @beginningOfMonth = convert(date_add(date_add(last_day(#{nowTime}),interval 1 day),interval -1 month), DATETIME);
-
         select * from SMSRecord where id = #{id, jdbcType=INTEGER} and
-            sendTime between @beginningOfMonthand and #{nowTime} order by sendTime;
+            sendTime between convert(date_add(date_add(last_day(#{nowTime}),interval 1 day),interval -1 month), DATETIME)
+            and #{nowTime} order by sendTime;
     </select>
 
     <insert id="insertCallRecord">
-        insert into SMSRecord(`id`, `number`, `startTime`, `endTime`)
+        insert into CallRecord(`id`, `number`, `startTime`, `endTime`)
         values (#{id, jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{startTime}, #{endTime});
     </insert>
 
     <select id="getCallRecord" resultType="model.CallRecord">
-        @beginningOfMonth = convert(date_add(date_add(last_day(#{nowTime}),interval 1 day),interval -1 month), DATETIME);
         select * from CallRecord where id = #{id, jdbcType=INTEGER} and
-            startTime between @beginningOfMonth and #{nowTime} order by startTime;
+            startTime between convert(date_add(date_add(last_day(#{nowTime}),interval 1 day),interval -1 month), DATETIME)
+            and convert(#{nowTime}, datetime) order by startTime;
     </select>
 
 </mapper>

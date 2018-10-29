@@ -24,17 +24,26 @@ public class Bill {
 
     @Override
     public String toString() {
-        return "账单：" +
-                "/n 用户ID：" + id +
-                "/n 用户姓名：" + name +
-                "/n 本月话费：" + totalCharge +
-                "/n 用户套餐：" + UserPlan() +
-                "/n 开始日期：" + startDate +
-                "/n 结束日期：" + endDate +
-                "/n 电话使用情况：" + callBill.toString() +
-                "/n 短信使用情况：" + smsBill.toString() +
-                "/n 本地流量使用情况：" + localDataBill.toString() +
-                "/n 国内流量使用情况：" + globalDataBill.toString()
+        StringBuilder sb = new StringBuilder();
+        sb.append("套餐");
+        sb.append(userPlans.get(0).getPid());
+        for (int i = 1; i < userPlans.size(); i++) {
+            sb.append(", ");
+            sb.append("套餐");
+            sb.append(userPlans.get(i).getPid());
+        }
+        String ls = System.lineSeparator();
+        return "账单："  + ls +
+                "用户ID：" + id + ls +
+                "用户姓名：" + name + ls +
+                "本月话费：" + totalCharge + "元" + ls +
+                "用户正在使用的套餐：" + sb.toString() + ls +
+                "开始日期：" + startDate + ls +
+                "结束日期：" + endDate + ls +
+                "电话使用情况：" + callBill.toString("分钟") + ls +
+                "短信使用情况：" + smsBill.toString("条") + ls +
+                "本地流量使用情况：" + localDataBill.toString("M") + ls +
+                "国内流量使用情况：" + globalDataBill.toString("M")
                 ;
     }
 

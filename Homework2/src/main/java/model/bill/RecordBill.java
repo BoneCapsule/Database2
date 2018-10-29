@@ -19,15 +19,12 @@ public class RecordBill {
         this.remain = remain;
     }
 
-    @Override
-    public String toString() {
-        return "记录账单{" +
-                "总使用量=" + totalUse +
-                ", 费用=" + charge +
-                ", 套餐总量=" + planTotal +
-                ", 额外使用量=" + extra +
-                ", 剩余量=" + remain +
-                '}';
+    public String toString(String unit) {
+        return "总使用量: " + totalUse + unit +
+                ", 费用: " + charge + "元" +
+                ", 套餐总量: " + planTotal + unit +
+                ", 额外使用量: " + extra + unit +
+                ", 剩余量:" + remain + unit;
     }
 
     public double getTotalUse() {

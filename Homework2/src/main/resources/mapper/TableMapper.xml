@@ -14,7 +14,7 @@
     </insert>
     <insert id="createBasicCharge">
         Create Table if not exists BasicCharge (
-            `id` int auto_increment,
+            `id` int,
             `CallCharge` double,
             `SMSCharge` double,
             `LocalDataCharge` double,

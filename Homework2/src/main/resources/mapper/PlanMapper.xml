@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="dao.PlanDao">
-    <insert id="insertPlan" keyProperty="pid" parameterType="model.Plan">
+    <insert id="insertPlan" keyProperty="id" parameterType="model.Plan">
         INSERT INTO Plan(`name`, `cost`, `call`, `SMS`, `LocalData`, `GlobalData`)
         VALUES (#{name,jdbcType=VARCHAR}, #{cost,jdbcType=DOUBLE}, #{call,jdbcType=INTEGER},
          #{messages,jdbcType=INTEGER},  #{localData,jdbcType=DOUBLE}, #{globalData,jdbcType=DOUBLE});
@@ -13,7 +13,7 @@
     </select>
 
     <select id="findPlanById" resultType="model.Plan">
-        SELECT * FROM Plan WHERE pid = #{id};
+        SELECT * FROM Plan WHERE id = #{id};
     </select>
 
     <select id="findAllPlans" resultType="model.Plan">
