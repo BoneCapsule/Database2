@@ -7,23 +7,32 @@ import model.DataEnum.EffectType;
 import model.HistoryPlan;
 import model.UserPlan;
 import model.bill.Bill;
+import operate.ExportSql;
 import operate.Operation;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Properties;
 
 @Mapper
 public class Main {
 
     private Operation operation = new Operation();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         init();
         Main main = new Main();
         main.getBill(1);
+
+        // 导出.sql脚本
+        InputStream is = ExportSql.class.getClassLoader().getResourceAsStream("application.properties");
+        Properties properties = new Properties();
+        properties.load(is);
+        ExportSql.export(properties);
     }
 
     // 初始化数据
